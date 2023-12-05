@@ -24,10 +24,13 @@ def hello():
     if request.method == "POST":
         Title = request.form["title"]
         Desc = request.form["desc"]
-    
-        todo = ToDo(title=Title, desc=Desc)
-        db.session.add(todo)
-        db.session.commit()
+        if Title == "":
+            alltodo = ToDo.query.all()
+            return render_template('index.html', alltodo=alltodo)
+        else:
+            todo = ToDo(title=Title, desc=Desc)
+            db.session.add(todo)
+            db.session.commit()
     alltodo = ToDo.query.all()
     # print(alltodo)
     return render_template('index.html', alltodo=alltodo)
@@ -70,4 +73,4 @@ def about():
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
