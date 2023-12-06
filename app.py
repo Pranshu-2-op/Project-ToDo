@@ -45,52 +45,6 @@ class VisitorLog(db.Model):
     def __repr__(self):
         return f"<VisitorLog {self.ip_address}>"
 
-# UNDER DEVLOPMENT
-
-# class Log(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-    
-#     ip_address = db.Column(db.String(20))
-#     visited = db.Column(db.String(300))
-    
-#     dt = timedelta(hours=5, minutes=30) + datetime.utcnow()
-#     nt= dt.strftime("%Y-%m-%d %I:%M:%S %p %Z")
-#     date_created = db.Column(db.String(20), default=nt)
-#     def date_created_ist(self):
-
-#         ist_offset = timedelta(hours=5, minutes=30)
-#         return self.date_created + ist_offset
-
-#     def __repr__(self):
-#         return f"<VisitorLog {self.ip_address}>"
-
-# Under Development
-# @app.route('/log_interaction', methods=['GET'])
-# def log_interaction():
-#     action = request.args.get('action')
-#     if action:
-#         log = InteractionLog(action=action)
-#         log_message = f"Accessed static file: {request.path} by {request.remote_addr}"
-#         ip = request.remote_addr
-#         log = Log(ip_address=ip, visited=log_message)
-#         db.session.add(log)
-#         db.session.commit()
-
-# UNDER DEVLOPMENT
-# @app.after_request
-# def log_static_access(response):
-#     try:
-#         if request.path.startswith(app.static_url_path):
-#             log_message = f"Accessed static file: {request.path} by {request.remote_addr}"
-#             ip = request.remote_addr
-#             log = Log(ip_address=ip, visited=log_message)
-#             db.session.add(log)
-#             db.session.commit()
-#     except Exception as e:
-#         print(f"Exception occurred: {e}")
-#         db.session.rollback()
-#     return response
-
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
@@ -181,16 +135,10 @@ def dev():
     return render_template("ip.html", ip_add=logs)
 
 
-# Under Development
-# @app.route("/log")
-# def log():
-#     logs = Log.query.all()
-#     return render_template("ComLog.html", logs=logs)
-
 
 
 if __name__ == "__main__":
     db.create_all()
-    app.run(debug=True)
+    app.run()
 
 
