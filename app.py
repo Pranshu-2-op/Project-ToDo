@@ -2,7 +2,7 @@ from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import os
-import logging
+
     
 
 app = Flask(__name__)
@@ -60,7 +60,7 @@ def hello():
             db.session.add(todo)
             db.session.commit()
             
-    ip = request.remote_addr
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
     oip = VisitorLog(ip_address = ip)
     db.session.add(oip)
     db.session.commit()
