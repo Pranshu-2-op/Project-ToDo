@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+    For Developer
+{% endblock title %}
+
+{% block body %}
+<div class="container my-5">
+    <h2>IP Adresses</h2>
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Sno</th>
+            <th scope="col">Ip</th>
+            <th scope="col">Visit Time</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for ip in ip_add %}
+            <tr>
+                <th scope="row">{{loop.index}}</th>
+                <td>{{ip.ip_address}}</td>
+                <td>{{ip.date_created}}</td>
+            </tr>   
+            {% endfor %}
+
+        </tbody>
+      </table>
+</div>
+{% endblock body %}

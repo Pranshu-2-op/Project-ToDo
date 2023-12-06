@@ -1,0 +1,58 @@
+<!-- Modify the block body content in songs.html -->
+{% extends 'base.html' %}
+{% block title %}Music{% endblock title %}
+{% block body %}
+
+<div class="container d-flex justify-content-center my-4 mb-5">
+    <div class="row">
+        {% for song in songs %}
+        <div class="col-md-3 mb-4">
+            <div class="card">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img class="card-img-top"
+                        src="{{ url_for('static', filename=song.thumbnail) }}"
+                        alt="Card image cap">
+                    <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="h5 font-weight-bold"><a href="{{ url_for('static', filename=song.thumbnail) }}" target="_blank">{{ song.title }}</a></h5>
+                    {% if song.title == "Meri Baari" %}
+                    <p class="mb-0">Iqlipse Nova</p>    
+                    {% elif song.title == "The Specture" %}
+                        <p class="mb-0">Alan Walker</p>    
+                    {% else %}
+                        <p class="mb-0">Arijit Singh</p>    
+                    {% endif %}
+                
+
+                    <audio controls class="w-100">
+                        <source src="{{ url_for('static', filename=song.audio) }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Pagination -->
+<div class="container">
+<!-- Previous Page Link -->
+<!-- <button type="button" class="btn btn-primary btn-lg">Large button</button> -->
+{% if page > 1 %}
+    <a href="{{ url_for('display_songs', page=page-1) }}" class="btn btn-primary btn-lg" role="button">Previous</a>
+{% endif %}
+    
+    <!-- Next Page Link -->
+{% if page < total_pages %}
+    <a href="{{ url_for('display_songs', page=page+1) }}" class="btn btn-primary btn-lg" role="button">Next</a>
+{% endif %}
+
+</div>
+
+
+
+{% endblock body %}
