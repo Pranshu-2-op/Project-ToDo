@@ -13,6 +13,7 @@ app.config['SQLAlCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 app.app_context().push()
 
+# Storing todo tasks
 class ToDo(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
@@ -23,11 +24,13 @@ class ToDo(db.Model):
     date_created = db.Column(db.String(20), default=nt)
     def date_created_ist(self):
 
-        ist_offset = timedelta(hours=5, minutes=30)
+        ist_offset = timedelta(hours=5, minutes=33)
         return self.date_created + ist_offset  
     def __repr__(self) -> str:
         return f"{self.sno} - {self.title}"
     
+
+# Tracing users ip addresses
 class VisitorLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
@@ -39,7 +42,7 @@ class VisitorLog(db.Model):
     date_created = db.Column(db.String(20), default=nt)
     def date_created_ist(self):
 
-        ist_offset = timedelta(hours=5, minutes=30)
+        ist_offset = timedelta(hours=5, minutes=33)
         return self.date_created + ist_offset
 
     def __repr__(self):
@@ -51,7 +54,7 @@ def hello():
     if request.method == "POST":
         Title = request.form["title"]
         Desc = request.form["desc"]
-        ip = request.remote_addr
+        # ip = request.remote_addr
         if Title == "":
             alltodo = ToDo.query.all()
             return render_template('index.html',title=False,  alltodo=alltodo)
@@ -70,6 +73,7 @@ def hello():
     return render_template('index.html', alltodo=alltodo)
     # return "Hello World!" 
 
+# to edit a task
 @app.route("/edit/<int:sno>", methods=['GET', 'POST'])
 def edit(sno):
     if request.method == "POST":
@@ -85,7 +89,7 @@ def edit(sno):
     todo = ToDo.query.filter_by(sno=sno).first()
     return render_template('edit.html', todo=todo)
     
-
+# Function to delete a task
 @app.route("/done/<int:sno>")
 def delete(sno):
     todo = ToDo.query.filter_by(sno=sno).first()
@@ -114,6 +118,12 @@ def get_songs_for_page(page_num, per_page):
 
 @app.route("/music")
 def display_songs():
+    # Captures ip
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    oip = VisitorLog(ip_address = ip)
+    db.session.add(oip)
+    db.session.commit()
+    
     page = request.args.get('page', 1, type=int)
     per_page = 3  # Number of songs per page
     all_songs = get_songs_for_page(page, per_page)
