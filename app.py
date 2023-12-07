@@ -100,7 +100,7 @@ def get_songs_for_page(page_num, per_page):
     all_songs = os.listdir(songs_directory)  # Get all file names in the directory
 
     # Priority songs
-    priority_songs = ["Main Phir Bhi.mp3", "Shayad.mp3"]  # Replace with your prioritized song names
+    priority_songs = ["Shayad.mp3", "Main Phir Bhi.mp3"]  # Replace with your prioritized song names
     prioritized_songs = [song for song in priority_songs if song in all_songs]
     for song in prioritized_songs:
         all_songs.remove(song)
