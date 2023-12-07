@@ -98,6 +98,15 @@ def delete(sno):
 def get_songs_for_page(page_num, per_page):
     songs_directory = os.path.join(app.root_path, 'static', 'music')  # Path to your songs directory
     all_songs = os.listdir(songs_directory)  # Get all file names in the directory
+
+    # Priority songs
+    priority_songs = ["Main Phir Bhi.mp3", "Shayad.mp3"]  # Replace with your prioritized song names
+    prioritized_songs = [song for song in priority_songs if song in all_songs]
+    for song in prioritized_songs:
+        all_songs.remove(song)
+        all_songs.insert(0, song)  # Move the song to the front of the list
+
+    
     start = (page_num - 1) * per_page
     end = start + per_page
     return all_songs[start:end]
