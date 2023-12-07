@@ -35,8 +35,8 @@ class VisitorLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     
     ip_address = db.Column(db.String(20))
-    visited = db.Column(db.String(300))
-    
+    visited = db.Column(db.String(60))
+    page = db.Column(db.String(30))
     dt = timedelta(hours=5, minutes=30) + datetime.utcnow()
     nt= dt.strftime("%Y-%m-%d %I:%M:%S %p %Z")
     date_created = db.Column(db.String(20), default=nt)
@@ -64,7 +64,8 @@ def hello():
             db.session.commit()
             
     ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    oip = VisitorLog(ip_address = ip)
+    page = "Home"
+    oip = VisitorLog(ip_address=ip, page=page)
     db.session.add(oip)
     db.session.commit()
     
@@ -116,11 +117,12 @@ def get_songs_for_page(page_num, per_page):
     return all_songs[start:end]
 
 
-@app.route("/music")
+@app.route("/music", methods=['GET', 'POST'])
 def display_songs():
     # Captures ip
     ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    oip = VisitorLog(ip_address = ip)
+    page = "Music"
+    oip = VisitorLog(ip_address=ip, page=page)
     db.session.add(oip)
     db.session.commit()
     
@@ -130,7 +132,7 @@ def display_songs():
     songs = []
     for song in all_songs:
         song_details = {
-            "title": song,  # Assuming song file name is the title
+            "title": song.replace('.mp3', ''),  # Assuming song file name is the title
             "thumbnail": f"thumbnail/{song.replace('.mp3', '.png')}",  # Assuming thumbnails have same name as songs with .png extension
             "audio": f"music/{song}"  # Path to the audio file
         }

@@ -11,6 +11,7 @@
           <tr>
             <th scope="col">Sno</th>
             <th scope="col">Ip</th>
+            <th scope="col">Page</th>
             <th scope="col">Visit Time</th>
           </tr>
         </thead>
@@ -19,6 +20,7 @@
             <tr>
                 <th scope="row">{{loop.index}}</th>
                 <td>{{ip.ip_address}}</td>
+                <td>{{ip.page}}</td>
                 <td>{{ip.date_created}}</td>
             </tr>   
             {% endfor %}
