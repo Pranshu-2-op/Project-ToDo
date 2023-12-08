@@ -129,10 +129,10 @@ def get_songs_for_page(page_num, per_page):
 def display_songs():
     # Captures ip
     ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
     page = "Music"
-    oip = VisitorLog(ip_address=ip, page=page)
-    db.session.add(oip)
-    db.session.commit()
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
     
     page = request.args.get('page', 1, type=int)
     per_page = 3  # Number of songs per page
@@ -152,14 +152,29 @@ def display_songs():
 
 @app.route("/about")
 def about():
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
+    page = "About"
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
     return render_template("about.html")
 
 @app.route("/updates")
 def updates():
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
+    page = "Updates"
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
     return render_template("updates.html")
 
 @app.route("/ip")
 def dev():
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
+    page = "ip"
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
     logs = VisitorLog.query.all()
     return render_template("ip.html", ip_add=logs)
 
