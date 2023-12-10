@@ -8,11 +8,11 @@
   <form action="/edit/{{todo.sno}}" method="POST">
     <div class="mb-3">
       <label for="TODO title" class="form-label">To do Title</label>
-      <input type="text" class="form-control" name="title" value="{{todo.title}}" id="title" aria-describedby="emailHelp">
+      <input type="text" class="form-control border border-info" name="title" value="{{todo.title}}" id="title" aria-describedby="emailHelp">
     </div>
     <div class="mb-3">
       <label for="Description" class="form-label">Description</label>
-      <input type="text" class="form-control" name="desc" value="{{todo.desc}}" id="desc">
+      <input type="text" class="form-control border border-info" name="desc" value="{{todo.desc}}" id="desc">
     </div>
     <button type="submit" class="btn btn-info">Edit</button>
   </form>
