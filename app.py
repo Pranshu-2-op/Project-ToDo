@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, request, jsonify
+from flask import Flask, render_template, redirect, request
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import os
@@ -57,11 +57,9 @@ def log_visitor(ip_address, device, page, time):
 
 @app.route("/", methods=['GET', 'POST'])
 def hello():
-    print(request.headers)
     if request.method == "POST":
         Title = request.form["title"]
         Desc = request.form["desc"]
-        # ip = request.remote_addr
         if Title == "":
             alltodo = ToDo.query.all()
             return render_template('index.html',title=False,  alltodo=alltodo)
@@ -75,12 +73,11 @@ def hello():
     page = "Home"
     ist = time()
     log_visitor(ip, user_agent ,page , ist)
-    
+
     ip_add = VisitorLog.query.all()
     alltodo = ToDo.query.all()
-    # print(alltodo)
     return render_template('index.html',ip_add=ip_add, alltodo=alltodo)
-    # return "Hello World!" 
+    
 
 # to edit a task
 @app.route("/edit/<int:sno>", methods=['GET', 'POST'])
@@ -109,15 +106,15 @@ def delete(sno):
 
 # Function to retrieve songs for a specific page
 def get_songs_for_page(page_num, per_page):
-    songs_directory = os.path.join(app.root_path, 'static', 'music')  # Path to your songs directory
-    all_songs = os.listdir(songs_directory)  # Get all file names in the directory
+    songs_directory = os.path.join(app.root_path, 'static', 'music')  
+    all_songs = os.listdir(songs_directory)
 
     # Priority songs
-    priority_songs = ["Shayad.mp3", "Main Phir Bhi.mp3"]  # Replace with your prioritized song names
+    priority_songs = ["Shayad.mp3", "Main Phir Bhi.mp3"]
     prioritized_songs = [song for song in priority_songs if song in all_songs]
     for song in prioritized_songs:
         all_songs.remove(song)
-        all_songs.insert(0, song)  # Move the song to the front of the list
+        all_songs.insert(0, song)
 
     
     start = (page_num - 1) * per_page
@@ -135,14 +132,14 @@ def display_songs():
     log_visitor(ip, user_agent ,page , ist)
     
     page = request.args.get('page', 1, type=int)
-    per_page = 3  # Number of songs per page
+    per_page = 3
     all_songs = get_songs_for_page(page, per_page)
     songs = []
     for song in all_songs:
         song_details = {
-            "title": song.replace('.mp3', ''),  # Assuming song file name is the title
-            "thumbnail": f"thumbnail/{song.replace('.mp3', '.png')}",  # Assuming thumbnails have same name as songs with .png extension
-            "audio": f"music/{song}"  # Path to the audio file
+            "title": song.replace('.mp3', ''),
+            "thumbnail": f"thumbnail/{song.replace('.mp3', '.png')}",
+            "audio": f"music/{song}"
         }
         songs.append(song_details)
     total_songs = len(os.listdir(os.path.join(app.root_path, 'static', 'music')))

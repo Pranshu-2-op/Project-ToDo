@@ -3,13 +3,13 @@
 {% block title %}Music{% endblock title %}
 {% block body %}
 
-<div class="container d-flex justify-content-center my-4 mb-5" >
+<div class="container-sm" >
     <div class="row" style="display: flex; justify-content: center ;">
         {% for song in songs %}
         <div class="col-md-4 mb-3">
-            <div class="card h-100">
+            <div class="card mt-3 h-100 border border-info">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-                    <img class="card-img-top"
+                    <img class="card-img-top object-fit-lg-contain border-info"
                         src="{{ url_for('static', filename=song.thumbnail) }}"
                         alt="Card image cap">
                     <a href="#!">
@@ -39,16 +39,15 @@
 </div>
 
 <!-- Pagination -->
-<div class="container" style="display: flex; justify-content: center;">
+<div class="container-sm my-3" style="display: flex; justify-content: center;">
 <!-- Previous Page Link -->
-<!-- <button type="button" class="btn btn-primary btn-lg">Large button</button> -->
 {% if page > 1 %}
-    <a href="{{ url_for('display_songs', page=page-1) }}" style="margin-right: 10px;" class="btn btn-info btn-lg" role="button">Previous</a>
+    <a href="{{ url_for('display_songs', page=page-1) }}" class="btn btn-info btn-md ms-3" role="button">Previous</a>
 {% endif %}
     
     <!-- Next Page Link -->
 {% if page < total_pages %}
-    <a href="{{ url_for('display_songs', page=page+1) }}" class="btn btn-info btn-lg" role="button">Next</a>
+    <a href="{{ url_for('display_songs', page=page+1) }}" class="btn btn-info btn-md" role="button">Next</a>
 {% endif %}
 
 </div>

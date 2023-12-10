@@ -5,13 +5,13 @@
 <!-- Form -->
 <div class="container">
   <form action="/" method="POST">
-    <div class="mb-3">
+    <div class="mx-auto mb-3">
       <label for="TODO title" class="form-label">To do Title</label>
-      <input type="text" class="form-control" name="title" id="TODO title" aria-describedby="emailHelp">
+      <input type="text" class="form-control border border-info" name="title" id="TODO title" aria-describedby="emailHelp">
     </div>
-    <div class="mb-3">
+    <div class="mx-auto mb-3">
       <label for="desc" class="form-label">Description</label>
-      <input type="text" class="form-control" name="desc" id="desc">
+      <input type="text" class="form-control border border-info" name="desc" id="desc">
     </div>
     <button type="submit" class="btn btn-info">Submit</button>
   </form>
@@ -43,6 +43,7 @@
           Enter a Title
         </div>
         {% endif %}
+
        
         <thead>
           <tr>
@@ -73,6 +74,7 @@
 
         {% endfor %}
         {% endif %}
+
     </tbody>
   </table>
 </div>
