@@ -27,7 +27,7 @@
                     {% endif %}
                 
 
-                    <audio class="w-100" controls {% if song.title == "Shayad" %}autoplay{% endif %}>
+                    <audio class="w-100" controls loop {% if song.title == "Shayad" %}autoplay{% endif %}>
                         <source src="{{ url_for('static', filename=song.audio) }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>

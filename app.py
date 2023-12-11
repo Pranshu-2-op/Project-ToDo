@@ -91,6 +91,11 @@ def edit(sno):
         db.session.add(todo)
         db.session.commit()
         return redirect("/")
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
+    page = "Edit"
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
     
     todo = ToDo.query.filter_by(sno=sno).first()
     return render_template('edit.html', todo=todo)
@@ -98,6 +103,12 @@ def edit(sno):
 # Function to delete a task
 @app.route("/done/<int:sno>")
 def delete(sno):
+    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
+    user_agent = request.headers.get('User-Agent')
+    page = "Delete"
+    ist = time()
+    log_visitor(ip, user_agent ,page , ist)
+    
     todo = ToDo.query.filter_by(sno=sno).first()
     db.session.delete(todo)
     db.session.commit()
