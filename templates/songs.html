@@ -21,13 +21,15 @@
                     {% if song.title == "Meri Baari" %}
                     <p class="mb-0">Iqlipse Nova</p>    
                     {% elif song.title == "The Specture" %}
-                        <p class="mb-0">Alan Walker</p>    
+                    <p class="mb-0">Alan Walker</p>    
+                    {% elif song.title == "White Noice Airplane Cabin" %}
+                    <p class="mb-0">Pranshu2OP</p>    
                     {% else %}
                         <p class="mb-0">Arijit Singh</p>    
                     {% endif %}
                 
 
-                    <audio class="w-100" controls loop {% if song.title == "Shayad" %}autoplay{% endif %}>
+                    <audio class="w-100" controls loop {% if song.title == "White Noice Airplane Cabin" %}autoplay{% endif %}>
                         <source src="{{ url_for('static', filename=song.audio) }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
