@@ -42,12 +42,12 @@ class VisitorLog(db.Model):
 
 
 
-def log_visitor(ip_address, device, page, time):   
+def log_visitor(page):   
     new_log = VisitorLog(
-        ip_address=ip_address,
+        ip_address=request.headers.get('X-Forwarded-For', request.remote_addr),
         page=page,
-        device = device,
-        ist_time = time
+        device = request.headers.get('User-Agent'),
+        ist_time = time()
     )
     db.session.add(new_log)
     db.session.commit()
@@ -68,11 +68,8 @@ def hello():
             db.session.add(todo)
             db.session.commit()
             
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "Home"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
 
     ip_add = VisitorLog.query.all()
     alltodo = ToDo.query.all()
@@ -91,11 +88,8 @@ def edit(sno):
         db.session.add(todo)
         db.session.commit()
         return redirect("/")
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "Edit"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
     
     todo = ToDo.query.filter_by(sno=sno).first()
     return render_template('edit.html', todo=todo)
@@ -103,11 +97,8 @@ def edit(sno):
 # Function to delete a task
 @app.route("/done/<int:sno>")
 def delete(sno):
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "Delete"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
     
     todo = ToDo.query.filter_by(sno=sno).first()
     db.session.delete(todo)
@@ -135,12 +126,8 @@ def get_songs_for_page(page_num, per_page):
 
 @app.route("/music", methods=['GET', 'POST'])
 def display_songs():
-    # Captures ip
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "Music"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
     
     page = request.args.get('page', 1, type=int)
     per_page = 3
@@ -160,29 +147,20 @@ def display_songs():
 
 @app.route("/about")
 def about():
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "About"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
     return render_template("about.html")
 
 @app.route("/updates")
 def updates():
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
     page = "Updates"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    log_visitor(page)
     return render_template("updates.html")
 
 @app.route("/ip")
 def dev():
-    ip = request.headers.get('X-Forwarded-For', request.remote_addr)
-    user_agent = request.headers.get('User-Agent')
-    page = "ip"
-    ist = time()
-    log_visitor(ip, user_agent ,page , ist)
+    page = "Log"
+    log_visitor(page)
     logs = VisitorLog.query.all()
     return render_template("ip.html", ip_add=logs)
 
