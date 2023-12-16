@@ -112,7 +112,7 @@ def get_songs_for_page(page_num, per_page):
     all_songs = os.listdir(songs_directory)
 
     # Priority songs
-    priority_songs = ["Hawayein.mp3", "Bhavyaaa.mp3", "Amit mahajan.mp3"]
+    priority_songs = ["Hawayein.mp3", "Amit Mahajan.mp3"]
     prioritized_songs = [song for song in priority_songs if song in all_songs]
     for song in prioritized_songs:
         all_songs.remove(song)
@@ -157,7 +157,7 @@ def updates():
     log_visitor(page)
     return render_template("updates.html")
 
-@app.route("/ip")
+@app.route("/log")
 def dev():
     page = "Log"
     log_visitor(page)
