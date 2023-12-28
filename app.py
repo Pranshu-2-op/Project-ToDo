@@ -75,12 +75,6 @@ def hello():
     alltodo = ToDo.query.all()
     return render_template('index.html',ip_add=ip_add, alltodo=alltodo)
 
-@app.before_request
-def block_yandex_bot():
-    user_agent = request.headers.get('User-Agent')
-    if user_agent and 'Yandex' in user_agent:
-        abort(403)  # Forbidden error for Yandex bot
-
 
 # to edit a task
 @app.route("/edit/<int:sno>", methods=['GET', 'POST'])
@@ -125,6 +119,8 @@ def get_songs_for_page(page_num, per_page):
     for song in prioritized_songs:
         all_songs.remove(song)
         all_songs.insert(0, song)
+
+
 
     start = (page_num - 1) * per_page
     end = start + per_page
