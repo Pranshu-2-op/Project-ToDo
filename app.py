@@ -119,9 +119,7 @@ def get_songs_for_page(page_num, per_page):
     for song in prioritized_songs:
         all_songs.remove(song)
         all_songs.insert(0, song)
-
-
-
+        
     start = (page_num - 1) * per_page
     end = start + per_page
     return all_songs[start:end]
