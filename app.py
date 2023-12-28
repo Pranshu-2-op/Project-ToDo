@@ -1,9 +1,9 @@
-from flask import Flask, render_template, redirect, request
+from flask import Flask, render_template, redirect, request, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import os
 
-    
+
 
 app = Flask(__name__)
 
@@ -28,10 +28,10 @@ class ToDo(db.Model):
     title = db.Column(db.String(200), nullable=False)
     desc = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.String(30))
-    
+
     def __repr__(self) -> str:
         return f"{self.sno} - {self.title}"
-    
+
 
 class VisitorLog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -42,7 +42,7 @@ class VisitorLog(db.Model):
 
 
 
-def log_visitor(page):   
+def log_visitor(page):
     new_log = VisitorLog(
         ip_address=request.headers.get('X-Forwarded-For', request.remote_addr),
         page=page,
@@ -67,14 +67,20 @@ def hello():
             todo = ToDo(title=Title, desc=Desc, date_created = time())
             db.session.add(todo)
             db.session.commit()
-            
+
     page = "Home"
     log_visitor(page)
 
     ip_add = VisitorLog.query.all()
     alltodo = ToDo.query.all()
     return render_template('index.html',ip_add=ip_add, alltodo=alltodo)
-    
+
+@app.before_request
+def block_yandex_bot():
+    user_agent = request.headers.get('User-Agent')
+    if user_agent and 'Yandex' in user_agent:
+        abort(403)  # Forbidden error for Yandex bot
+
 
 # to edit a task
 @app.route("/edit/<int:sno>", methods=['GET', 'POST'])
@@ -90,16 +96,16 @@ def edit(sno):
         return redirect("/")
     page = "Edit"
     log_visitor(page)
-    
+
     todo = ToDo.query.filter_by(sno=sno).first()
     return render_template('edit.html', todo=todo)
-    
+
 # Function to delete a task
 @app.route("/done/<int:sno>")
 def delete(sno):
     page = "Delete"
     log_visitor(page)
-    
+
     todo = ToDo.query.filter_by(sno=sno).first()
     db.session.delete(todo)
     db.session.commit()
@@ -108,27 +114,27 @@ def delete(sno):
 
 # Function to retrieve songs for a specific page
 def get_songs_for_page(page_num, per_page):
-    songs_directory = os.path.join(app.root_path, 'static', 'music')  
+    songs_directory = os.path.join(app.root_path, 'static', 'music')
     all_songs = os.listdir(songs_directory)
 
-    # Priority songs
-    priority_songs = ["Hawayein.mp3", "Amit Mahajan.mp3"]
+    # Priority songs should be listed as separate strings, not one string
+    priority_songs = ["Mera Safar.mp3", "Raabta.mp3", "The Specture.mp3", "Soch Na Sake.mp3", "Meri Baari.mp3", "Amit Mahajan.mp3"]
+
+    # Prioritize existing songs
     prioritized_songs = [song for song in priority_songs if song in all_songs]
     for song in prioritized_songs:
         all_songs.remove(song)
         all_songs.insert(0, song)
 
-    
     start = (page_num - 1) * per_page
     end = start + per_page
     return all_songs[start:end]
-
 
 @app.route("/music", methods=['GET', 'POST'])
 def display_songs():
     page = "Music"
     log_visitor(page)
-    
+
     page = request.args.get('page', 1, type=int)
     per_page = 3
     all_songs = get_songs_for_page(page, per_page)
@@ -150,6 +156,11 @@ def about():
     page = "About"
     log_visitor(page)
     return render_template("about.html")
+
+
+@app.route("/github")
+def github_repo():
+    return redirect("https://github.com/Pranshu-2-op/ToDo")
 
 @app.route("/updates")
 def updates():

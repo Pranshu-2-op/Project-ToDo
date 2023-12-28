@@ -3,35 +3,36 @@
 {% block title %}Music{% endblock title %}
 {% block body %}
 
-<div class="container-sm" >
+<div class="container-sm">
     <div class="row" style="display: flex; justify-content: center ;">
         {% for song in songs %}
         <div class="col-md-4 mb-3">
             <div class="card mt-3 h-100 border border-info">
                 <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                     <img class="card-img-top object-fit-lg-contain border-info"
-                        src="{{ url_for('static', filename=song.thumbnail) }}"
-                        alt="Card image cap">
+                        src="{{ url_for('static', filename=song.thumbnail) }}" alt="Card image cap">
                     <a href="#!">
                         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                     </a>
                 </div>
                 <div class="card-body text-center">
-                    <h5 class="h5 font-weight-bold"><a href="{{ url_for('static', filename=song.thumbnail) }}" target="_blank">{{ song.title }}</a></h5>
+                    <h5 class="h5 font-weight-bold"><a href="{{ url_for('static', filename=song.thumbnail) }}"
+                            target="_blank">{{ song.title }}</a></h5>
                     {% if song.title == "Meri Baari" %}
-                    <p class="mb-0">Iqlipse Nova</p>    
+                    <p class="mb-0">Iqlipse Nova</p>
                     {% elif song.title == "The Specture" %}
-                    <p class="mb-0">Alan Walker</p>    
+                    <p class="mb-0">Alan Walker</p>
                     {% elif song.title == "White Noice Airplane Cabin" %}
-                    <p class="mb-0">Pranshu2OP</p>    
+                    <p class="mb-0">Pranshu2OP</p>
                     {% elif song.title == "Amit Mahajan" %}
-                    <p class="mb-0">Amit Mahajan</p>    
+                    <p class="mb-0">Amit Mahajan</p>
                     {% else %}
-                        <p class="mb-0">Arijit Singh</p>    
+                    <p class="mb-0">Arijit Singh</p>
                     {% endif %}
-                
 
-                    <audio class="w-100" controls loop {% if song.title == "Hawayein" %}autoplay{% endif %}>
+
+                    <audio class="w-100" preload="none" controls loop {% if song.title=="Amit Mahajan" %}autoplay{% endif
+                        %}>
                         <source src="{{ url_for('static', filename=song.audio) }}" type="audio/mpeg">
                         Your browser does not support the audio element.
                     </audio>
@@ -46,12 +47,18 @@
 <div class="container-sm my-3" style="display: flex; justify-content: center;">
 <!-- Previous Page Link -->
 {% if page > 1 %}
-    <a href="{{ url_for('display_songs', page=page-1) }}" class="btn btn-info btn-md ms-3" role="button">Previous</a>
+    <a href="{{ url_for('display_songs', page=page-1) }}">
+        <img src="{{ url_for('static', filename='assets/Previous.svg') }}" alt="Previous" height="40px">
+    </a>
 {% endif %}
     
     <!-- Next Page Link -->
 {% if page < total_pages %}
-    <a href="{{ url_for('display_songs', page=page+1) }}" class="btn btn-info btn-md" role="button">Next</a>
+    
+    <a href="{{ url_for('display_songs', page=page+1) }}" class="me-3">
+        <img src="{{ url_for('static', filename='assets/Next.svg') }}" alt="Next" height="40px">
+    </a>
+
 {% endif %}
 
 </div>
