@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block body %}
+    
+<div class="container-sm">
+    <div class="row" style="display: flex; justify-content: center ;">
+        
+        <div class="col-md-4 mb-3">
+            <div class="card mt-3 h-100 border border-info">
+                <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                    <img class="card-img-top object-fit-lg-contain border-info"
+                        src="{{ url_for('static', filename='thumbnail/bhavy.png') }}" alt="Card image cap">
+                    <a href="#!">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                    </a>
+                </div>
+                <div class="card-body text-center">
+                    <h5 class="h5 font-weight-bold">Bhavya</h5>
+
+
+                    <audio class="w-100" preload="none" controls loop id="myAudio">
+                        <source src="{{ url_for('static', filename='music/Udta Parinda.mp3') }}" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    
+
+                    
+                    <script>
+                      document.addEventListener('DOMContentLoaded', function() {
+                        var audio = document.getElementById('myAudio');
+                        
+                        // Function to simulate a click on the play button
+                        function simulatePlayClick() {
+                          // Check if the audio element supports the play method
+                          if (typeof audio.play === 'function') {
+                            // Trigger the play method
+                            audio.play();
+                          }
+                        }
+                    
+                        // Simulate the play click based on your consent logic
+                        simulatePlayClick();
+                      });
+                    </script>
+                    
+                    
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{% endblock body %}

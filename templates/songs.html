@@ -18,7 +18,7 @@
                 <div class="card-body text-center">
                     <h5 class="h5 font-weight-bold"><a href="{{ url_for('static', filename=song.thumbnail) }}"
                             target="_blank">{{ song.title }}</a></h5>
-                    {% if song.title == "Meri Baari" %}
+                    {% if song.title == "Meri Baari" or song.title == "Udta Parinda" %}
                     <p class="mb-0">Iqlipse Nova</p>
                     {% elif song.title == "The Specture" %}
                     <p class="mb-0">Alan Walker</p>
@@ -26,12 +26,14 @@
                     <p class="mb-0">Pranshu2OP</p>
                     {% elif song.title == "Amit Mahajan" %}
                     <p class="mb-0">Amit Mahajan</p>
+                    {% elif song.title == "Bella Ciao" %}
+                    <p class="mb-0">Money Heist</p>
                     {% else %}
                     <p class="mb-0">Arijit Singh</p>
                     {% endif %}
 
 
-                    <audio class="w-100" preload="none" controls loop {% if song.title=="Amit Mahajan" %}autoplay{% endif
+                    <audio class="w-100" preload="none" controls loop {% if song.title=="Hawayein" %}autoplay{% endif
                         %}>
                         <source src="{{ url_for('static', filename=song.audio) }}" type="audio/mpeg">
                         Your browser does not support the audio element.

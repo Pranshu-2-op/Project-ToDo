@@ -106,13 +106,13 @@ def delete(sno):
     return redirect("/")
 
 
-# Function to retrieve songs for a specific page
+# Function to retrieve songs for a specific pager
 def get_songs_for_page(page_num, per_page):
     songs_directory = os.path.join(app.root_path, 'static', 'music')
     all_songs = os.listdir(songs_directory)
 
     # Priority songs should be listed as separate strings, not one string
-    priority_songs = ["Mera Safar.mp3", "Raabta.mp3", "The Specture.mp3", "Soch Na Sake.mp3", "Meri Baari.mp3", "Amit Mahajan.mp3"]
+    priority_songs = ["Mera Safar.mp3", "Raabta.mp3", "The Specture.mp3", "Soch Na Sake.mp3", "Meri Baari.mp3", "Amit Mahajan.mp3", "Hawayein.mp3", "Bella Ciao.mp3"]
 
     # Prioritize existing songs
     prioritized_songs = [song for song in priority_songs if song in all_songs]
@@ -162,13 +162,20 @@ def updates():
     log_visitor(page)
     return render_template("updates.html")
 
+
+@app.route("/bird")
+def bird():
+    page = "Bird"
+    log_visitor(page)
+    return render_template("bird.html")
+
+
 @app.route("/log")
 def dev():
     page = "Log"
     log_visitor(page)
     logs = VisitorLog.query.all()
     return render_template("ip.html", ip_add=logs)
-
 
 
 
